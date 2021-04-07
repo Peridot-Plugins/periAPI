@@ -28,8 +28,8 @@ public class InventoryDragListener implements Listener {
         if (event.getCursor() == null || event.getCursor().getType() == Material.AIR) return;
         Player player = (Player) event.getWhoClicked();
 
-        if (periApi.getInventoryManager().getInventories().isEmpty()) return;
-        for (CustomInventory customInventory : periApi.getInventoryManager().getInventories()) {
+        if (this.periApi.getInventoryManager().getInventories().isEmpty()) return;
+        for (CustomInventory customInventory : this.periApi.getInventoryManager().getInventories()) {
             if (event.getInventory().getHolder() == null) continue;
             if (!(event.getInventory().getHolder().equals(customInventory))) continue;
             if (!event.getInventory().equals(player.getOpenInventory().getTopInventory())) return;

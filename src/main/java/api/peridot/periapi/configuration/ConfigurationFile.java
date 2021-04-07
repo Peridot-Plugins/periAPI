@@ -19,8 +19,8 @@ public class ConfigurationFile extends ConfigurationProvider {
         this.fileName = fileName;
         this.sectionName = sectionName;
 
-        reloadConfiguration();
-        setSection(yamlConfiguration.getConfigurationSection(sectionName));
+        this.reloadConfiguration();
+        this.setSection(this.yamlConfiguration.getConfigurationSection(sectionName));
     }
 
     public ConfigurationFile(Plugin plugin, String fileName) {
@@ -28,36 +28,36 @@ public class ConfigurationFile extends ConfigurationProvider {
     }
 
     public void reloadConfiguration() {
-        if (!plugin.getDataFolder().exists()) {
-            plugin.getDataFolder().mkdir();
+        if (!this.plugin.getDataFolder().exists()) {
+            this.plugin.getDataFolder().mkdir();
         }
 
-        File file = new File(plugin.getDataFolder(), fileName + ".yml");
+        File file = new File(this.plugin.getDataFolder(), this.fileName + ".yml");
 
         if (!file.exists()) {
-            plugin.saveResource(fileName + ".yml", true);
+            this.plugin.saveResource(this.fileName + ".yml", true);
         }
 
-        yamlConfiguration = YamlConfiguration.loadConfiguration(file);
-        setSection(yamlConfiguration.getConfigurationSection(sectionName));
+        this.yamlConfiguration = YamlConfiguration.loadConfiguration(file);
+        this.setSection(this.yamlConfiguration.getConfigurationSection(this.sectionName));
 
-        reload();
+        this.reload();
     }
 
     public String getDirectory() {
-        return plugin.getDataFolder() + "/" + getFileName() + ".yml";
+        return this.plugin.getDataFolder() + "/" + this.getFileName() + ".yml";
     }
 
     public String getFileName() {
-        return fileName;
+        return this.fileName;
     }
 
     public String getSectionName() {
-        return sectionName;
+        return this.sectionName;
     }
 
     public YamlConfiguration getYamlConfiguration() {
-        return yamlConfiguration;
+        return this.yamlConfiguration;
     }
 
 }

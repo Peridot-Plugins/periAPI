@@ -19,15 +19,15 @@ public class PeriInventoryManager {
     }
 
     public Plugin getPlugin() {
-        return plugin;
+        return this.plugin;
     }
 
     public PeriAPI getPeriApi() {
-        return periApi;
+        return this.periApi;
     }
 
     public List<CustomInventory> getInventories() {
-        return inventoriesList;
+        return this.inventoriesList;
     }
 
     public void addInventory(CustomInventory inventory) {

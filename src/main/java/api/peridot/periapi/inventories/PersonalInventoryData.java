@@ -8,21 +8,21 @@ public class PersonalInventoryData {
     private int openedPage;
 
     public BukkitTask getUpdateTask() {
-        return updateTask;
+        return this.updateTask;
     }
 
     public void setUpdateTask(BukkitTask updateTask) {
-        cancelUpdateTask();
+        this.cancelUpdateTask();
         this.updateTask = updateTask;
     }
 
     public void cancelUpdateTask() {
-        if (updateTask == null) return;
-        updateTask.cancel();
+        if (this.updateTask == null) return;
+        this.updateTask.cancel();
     }
 
     public int getOpenedPage() {
-        return openedPage;
+        return this.openedPage;
     }
 
     public void setOpenedPage(int openedPage) {

@@ -47,10 +47,10 @@ public class ItemBuilder {
 
     @Override
     public ItemBuilder clone() {
-        if (itemStack == null || itemStack.getType() == Material.AIR) {
+        if (this.itemStack == null || this.itemStack.getType() == Material.AIR) {
             new ItemBuilder(Material.AIR);
         }
-        return new ItemBuilder(itemStack.clone(), itemMeta.clone());
+        return new ItemBuilder(this.itemStack.clone(), this.itemMeta.clone());
     }
 
     public ItemBuilder setDurability(short durability) {
@@ -79,7 +79,7 @@ public class ItemBuilder {
     }
 
     public ItemBuilder setLore(String... lore) {
-        return setLore(Arrays.asList(lore));
+        return this.setLore(Arrays.asList(lore));
     }
 
     public ItemBuilder addLoreLine(String line) {
@@ -90,7 +90,7 @@ public class ItemBuilder {
     }
 
     public ItemBuilder addLoreLine(String line, int lineIndex) {
-        List<String> lore = itemMeta.hasLore() ? new ArrayList<>(this.itemMeta.getLore()) : new ArrayList<>();
+        List<String> lore = this.itemMeta.hasLore() ? new ArrayList<>(this.itemMeta.getLore()) : new ArrayList<>();
         lore.set(lineIndex, line);
         this.itemMeta.setLore(lore);
         return this;
@@ -226,14 +226,14 @@ public class ItemBuilder {
 
     @Deprecated
     public ItemBuilder setWoolColor(DyeColor color) {
-        if (itemStack.getType().name().contains("WOOL")) return this;
+        if (this.itemStack.getType().name().contains("WOOL")) return this;
         this.itemStack.setDurability(color.getWoolData());
         return this;
     }
 
     public ItemBuilder setLeatherArmorColor(Color color) {
         try {
-            LeatherArmorMeta leatherArmorMeta = (LeatherArmorMeta) itemStack.getItemMeta();
+            LeatherArmorMeta leatherArmorMeta = (LeatherArmorMeta) this.itemStack.getItemMeta();
             leatherArmorMeta.setColor(color);
             this.itemMeta = leatherArmorMeta;
         } catch (Exception ignored) {
@@ -242,8 +242,8 @@ public class ItemBuilder {
     }
 
     public ItemStack build() {
-        itemStack.setItemMeta(itemMeta);
-        return itemStack;
+        this.itemStack.setItemMeta(this.itemMeta);
+        return this.itemStack;
     }
 
 }

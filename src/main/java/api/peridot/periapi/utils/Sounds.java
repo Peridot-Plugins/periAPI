@@ -210,13 +210,13 @@ public enum Sounds {
     }
 
     public Sound bukkitSound() {
-        if (resolvedSound != null) return resolvedSound;
+        if (this.resolvedSound != null) return this.resolvedSound;
 
         try {
             if (Reflection.serverVersionNumber >= 9) {
-                return resolvedSound = Sound.valueOf(post19sound);
+                return this.resolvedSound = Sound.valueOf(this.post19sound);
             } else {
-                return resolvedSound = Sound.valueOf(pre19sound);
+                return this.resolvedSound = Sound.valueOf(this.pre19sound);
             }
         } catch (Exception ignored) {
             Bukkit.getLogger().warning("Problem with getting bukkit sound");

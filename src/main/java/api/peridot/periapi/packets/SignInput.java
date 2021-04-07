@@ -15,16 +15,16 @@ public class SignInput {
 
     private final Class<?> packetPlayInUpdateSign = Reflection.getMinecraftClass("PacketPlayInUpdateSign");
     private final Class<?> chatBaseComponentClass = Reflection.getMinecraftClass("IChatBaseComponent");
-    private final Class<?> chatBaseComponentArrayClass = Reflection.getClass("[L" + chatBaseComponentClass.getName() + ";");
+    private final Class<?> chatBaseComponentArrayClass = Reflection.getClass("[L" + this.chatBaseComponentClass.getName() + ";");
     private final Class<?> blockPositionClass = Reflection.getMinecraftClass("BlockPosition");
-    private final Reflection.ConstructorInvoker packetPlayOutOpenSignEditor = Reflection.getConstructor(Reflection.getMinecraftClass("PacketPlayOutOpenSignEditor"), blockPositionClass);
-    private final Reflection.ConstructorInvoker blockPosition = Reflection.getConstructor(blockPositionClass, int.class, int.class, int.class);
-    private final Reflection.MethodInvoker getText = Reflection.getMethod(chatBaseComponentClass, "getText");
-    private final Reflection.MethodInvoker getPositionX = Reflection.getMethod(blockPositionClass, "getX");
-    private final Reflection.MethodInvoker getPositionY = Reflection.getMethod(blockPositionClass, "getY");
-    private final Reflection.MethodInvoker getPositionZ = Reflection.getMethod(blockPositionClass, "getZ");
-    private final Reflection.FieldAccessor<?> signPosition = Reflection.getField(packetPlayInUpdateSign, "a", blockPositionClass);
-    private final Reflection.FieldAccessor<?> signMessage = Reflection.getField(packetPlayInUpdateSign, "b", chatBaseComponentArrayClass);
+    private final Reflection.ConstructorInvoker packetPlayOutOpenSignEditor = Reflection.getConstructor(Reflection.getMinecraftClass("PacketPlayOutOpenSignEditor"), this.blockPositionClass);
+    private final Reflection.ConstructorInvoker blockPosition = Reflection.getConstructor(this.blockPositionClass, int.class, int.class, int.class);
+    private final Reflection.MethodInvoker getText = Reflection.getMethod(this.chatBaseComponentClass, "getText");
+    private final Reflection.MethodInvoker getPositionX = Reflection.getMethod(this.blockPositionClass, "getX");
+    private final Reflection.MethodInvoker getPositionY = Reflection.getMethod(this.blockPositionClass, "getY");
+    private final Reflection.MethodInvoker getPositionZ = Reflection.getMethod(this.blockPositionClass, "getZ");
+    private final Reflection.FieldAccessor<?> signPosition = Reflection.getField(this.packetPlayInUpdateSign, "a", this.blockPositionClass);
+    private final Reflection.FieldAccessor<?> signMessage = Reflection.getField(this.packetPlayInUpdateSign, "b", this.chatBaseComponentArrayClass);
 
     private final Plugin plugin;
     private final TinyProtocol protocol;
@@ -35,38 +35,38 @@ public class SignInput {
     private SignInput(Plugin plugin) {
         this.plugin = plugin;
 
-        protocol = new TinyProtocol(plugin) {
+        this.protocol = new TinyProtocol(plugin) {
             @Override
             public Object onPacketInAsync(Player sender, Channel channel, Object packet) {
-                if (signMessage.hasField(packet)) {
+                if (SignInput.this.signMessage.hasField(packet)) {
                     String[] result = new String[4];
-                    Object[] casted = (Object[]) signMessage.get(packet);
+                    Object[] casted = (Object[]) SignInput.this.signMessage.get(packet);
                     for (int i = 0; i < 4; i++) {
-                        result[i] = getText.invoke(casted[i]).toString();
+                        result[i] = SignInput.this.getText.invoke(casted[i]).toString();
                     }
 
-                    Response response = completeFunction.apply(sender, result);
+                    Response response = SignInput.this.completeFunction.apply(sender, result);
 
                     boolean close = response.type == Response.Type.CLOSE;
 
-                    Object blockPosition = signPosition.get(packet);
+                    Object blockPosition = SignInput.this.signPosition.get(packet);
 
-                    int signX = (int) getPositionX.invoke(blockPosition);
-                    int signY = (int) getPositionY.invoke(blockPosition);
-                    int signZ = (int) getPositionZ.invoke(blockPosition);
+                    int signX = (int) SignInput.this.getPositionX.invoke(blockPosition);
+                    int signY = (int) SignInput.this.getPositionY.invoke(blockPosition);
+                    int signZ = (int) SignInput.this.getPositionZ.invoke(blockPosition);
 
                     Location signLocation = new Location(sender.getWorld(), signX, signY, signZ);
                     Block block = signLocation.getWorld().getBlockAt(signLocation);
 
                     if (!close) {
                         if (response.type == Response.Type.TEXT) {
-                            Bukkit.getScheduler().runTaskLaterAsynchronously(plugin, () -> open(sender, response.text), 2);
+                            Bukkit.getScheduler().runTaskLaterAsynchronously(this.plugin, () -> SignInput.this.open(sender, response.text), 2);
                         } else {
-                            Bukkit.getScheduler().runTaskLaterAsynchronously(plugin, () -> open(sender), 2);
+                            Bukkit.getScheduler().runTaskLaterAsynchronously(this.plugin, () -> SignInput.this.open(sender), 2);
                         }
                     } else {
                         sender.sendBlockChange(signLocation, block.getType(), block.getData());
-                        protocol.close();
+                        SignInput.this.protocol.close();
                     }
                 }
 
@@ -75,16 +75,8 @@ public class SignInput {
         };
     }
 
-    public static Builder builder() {
-        return new Builder();
-    }
-
-    public static Response response() {
-        return new Response();
-    }
-
     public void open(Player player) {
-        open(player, text);
+        this.open(player, this.text);
     }
 
     private void open(Player player, String[] customText) {
@@ -99,12 +91,20 @@ public class SignInput {
         player.sendSignChange(location, customText);
 
         try {
-            Object openSign = packetPlayOutOpenSignEditor.invoke(blockPosition.invoke(location.getBlockX(), location.getBlockY(), location.getBlockZ()));
+            Object openSign = this.packetPlayOutOpenSignEditor.invoke(this.blockPosition.invoke(location.getBlockX(), location.getBlockY(), location.getBlockZ()));
 
             PacketSender.sendPacket(player, openSign);
         } catch (Exception ex) {
             ex.printStackTrace();
         }
+    }
+
+    public static Builder builder() {
+        return new Builder();
+    }
+
+    public static Response response() {
+        return new Response();
     }
 
     public static final class Builder {
@@ -158,10 +158,10 @@ public class SignInput {
                 throw new IllegalStateException("The plugin instance is required");
             }
 
-            SignInput signInput = new SignInput(plugin);
+            SignInput signInput = new SignInput(this.plugin);
 
             signInput.text = this.text;
-            signInput.completeFunction = completeFunction;
+            signInput.completeFunction = this.completeFunction;
 
             return signInput;
         }

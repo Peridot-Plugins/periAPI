@@ -28,30 +28,30 @@ public class LangAPI {
     /* Getting or Creating messages */
 
     public LangMessage getMessage(String id) {
-        return getMessage(id, false);
+        return this.getMessage(id, false);
     }
 
     public LangMessage getMessage(String id, boolean force) {
-        LangMessage message = messages.get(id);
+        LangMessage message = this.messages.get(id);
 
         if (message == null || force) {
-            message = new LangMessage(section.getConfigurationSection(id));
-            messages.put(id, message);
+            message = new LangMessage(this.section.getConfigurationSection(id));
+            this.messages.put(id, message);
         }
 
         return message;
     }
 
     public SimpleLangMessage getSimpleMessage(String id) {
-        return getSimpleMessage(id, false);
+        return this.getSimpleMessage(id, false);
     }
 
     public SimpleLangMessage getSimpleMessage(String id, boolean force) {
-        SimpleLangMessage message = simpleMessages.get(id);
+        SimpleLangMessage message = this.simpleMessages.get(id);
 
         if (message == null || force) {
-            message = new SimpleLangMessage(section.getConfigurationSection(id));
-            simpleMessages.put(id, message);
+            message = new SimpleLangMessage(this.section.getConfigurationSection(id));
+            this.simpleMessages.put(id, message);
         }
 
         return message;
@@ -60,42 +60,42 @@ public class LangAPI {
     /* Sending */
 
     public void broadcast(String id, Replacement... replacements) {
-        LangMessage message = getMessage(id);
+        LangMessage message = this.getMessage(id);
         message.broadcast(replacements);
     }
 
     public void sendMessage(CommandSender sender, String id, Replacement... replacements) {
-        LangMessage message = getMessage(id);
+        LangMessage message = this.getMessage(id);
         message.send(sender, replacements);
     }
 
     public void broadcastSimple(String id, Replacement... replacements) {
-        SimpleLangMessage message = getSimpleMessage(id);
+        SimpleLangMessage message = this.getSimpleMessage(id);
         message.broadcast(replacements);
     }
 
     public void sendSimpleMessage(CommandSender sender, String id, Replacement... replacements) {
-        SimpleLangMessage message = getSimpleMessage(id);
+        SimpleLangMessage message = this.getSimpleMessage(id);
         message.send(sender, replacements);
     }
 
     /* Reload */
 
     public void reload() {
-        if (section == null) {
-            logger.warning("[LangAPI] Missing messages section!");
+        if (this.section == null) {
+            this.logger.warning("[LangAPI] Missing messages section!");
             return;
         }
 
-        if (!messages.isEmpty()) {
-            messages.keySet().forEach(id -> {
-                messages.put(id, getMessage(id, true));
+        if (!this.messages.isEmpty()) {
+            this.messages.keySet().forEach(id -> {
+                this.messages.put(id, this.getMessage(id, true));
             });
         }
 
-        if (!simpleMessages.isEmpty()) {
-            simpleMessages.keySet().forEach(id -> {
-                simpleMessages.put(id, getSimpleMessage(id, true));
+        if (!this.simpleMessages.isEmpty()) {
+            this.simpleMessages.keySet().forEach(id -> {
+                this.simpleMessages.put(id, this.getSimpleMessage(id, true));
             });
         }
     }

@@ -20,15 +20,15 @@ public class PeriAPI {
 
     public void init() {
         PluginManager pluginManager = Bukkit.getPluginManager();
-        pluginManager.registerEvents(new InventoryClickListener(plugin, this), plugin);
-        pluginManager.registerEvents(new InventoryCloseListener(plugin, this), plugin);
-        pluginManager.registerEvents(new InventoryDragListener(plugin, this), plugin);
+        pluginManager.registerEvents(new InventoryClickListener(this.plugin, this), this.plugin);
+        pluginManager.registerEvents(new InventoryCloseListener(this.plugin, this), this.plugin);
+        pluginManager.registerEvents(new InventoryDragListener(this.plugin, this), this.plugin);
 
-        inventoryManager = new PeriInventoryManager(plugin, this);
+        this.inventoryManager = new PeriInventoryManager(this.plugin, this);
     }
 
     public PeriInventoryManager getInventoryManager() {
-        return inventoryManager;
+        return this.inventoryManager;
     }
 
 }

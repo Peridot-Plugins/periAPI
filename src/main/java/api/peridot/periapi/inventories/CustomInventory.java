@@ -84,61 +84,57 @@ public class CustomInventory implements InventoryHolder {
                 break;
         }
         this.rows = rows;
-        this.content = new InventoryContent(rows, columns);
-        this.size = rows * columns;
+        this.content = new InventoryContent(rows, this.columns);
+        this.size = rows * this.columns;
         manager.addInventory(this);
     }
 
-    public static Builder builder() {
-        return new Builder();
-    }
-
     public String getTitle() {
-        return title;
+        return this.title;
     }
 
     public InventoryType getInventoryType() {
-        return inventoryType;
+        return this.inventoryType;
     }
 
     public int getRows() {
-        return rows;
+        return this.rows;
     }
 
     public int getColumns() {
-        return columns;
+        return this.columns;
     }
 
     public int getSize() {
-        return size;
+        return this.size;
     }
 
     public boolean isCloseable() {
-        return closeable;
+        return this.closeable;
     }
 
     public int getUpdateDelay() {
-        return updateDelay;
+        return this.updateDelay;
     }
 
     public Consumer<InventoryCloseEvent> getCloseConsumer() {
-        return closeConsumer;
+        return this.closeConsumer;
     }
 
     public InventoryProvider getProvider() {
-        return provider;
+        return this.provider;
     }
 
     public InventoryContent getContent() {
-        return content;
+        return this.content;
     }
 
     public PersonalInventoryData getPersonalInventoryData(Player player) {
-        PersonalInventoryData inventoryData = personalInventoriesDataMap.get(player.getUniqueId());
+        PersonalInventoryData inventoryData = this.personalInventoriesDataMap.get(player.getUniqueId());
 
         if (inventoryData == null) {
             inventoryData = new PersonalInventoryData();
-            personalInventoriesDataMap.put(player.getUniqueId(), inventoryData);
+            this.personalInventoriesDataMap.put(player.getUniqueId(), inventoryData);
         }
 
         return inventoryData;
@@ -146,7 +142,7 @@ public class CustomInventory implements InventoryHolder {
 
     @Override
     public Inventory getInventory() {
-        if (inventoryType == null) {
+        if (this.inventoryType == null) {
             return Bukkit.createInventory(this, this.rows * 9, this.title);
         } else {
             return Bukkit.createInventory(this, this.inventoryType, this.title);
@@ -154,15 +150,15 @@ public class CustomInventory implements InventoryHolder {
     }
 
     public BukkitTask getUpdateTask(Player player) {
-        PersonalInventoryData inventoryData = getPersonalInventoryData(player);
+        PersonalInventoryData inventoryData = this.getPersonalInventoryData(player);
         BukkitTask updateTask = inventoryData.getUpdateTask();
 
         if (updateTask == null) {
             Inventory inventory = player.getOpenInventory().getTopInventory();
             if (inventory != null && inventory.getHolder().equals(this)) {
                 updateTask = Bukkit.getScheduler().runTaskTimerAsynchronously(this.plugin, () -> {
-                    provider.update(player, content);
-                    content.fillInventory(inventory);
+                    this.provider.update(player, this.content);
+                    this.content.fillInventory(inventory);
                 }, 0, this.updateDelay);
             }
             inventoryData.setUpdateTask(updateTask);
@@ -173,33 +169,37 @@ public class CustomInventory implements InventoryHolder {
 
     public void open(Player player, int page) {
         Validate.isTrue(page >= 0, "Page value must be bigger or equal 0");
-        getPersonalInventoryData(player).setOpenedPage(page);
-        open(player);
+        this.getPersonalInventoryData(player).setOpenedPage(page);
+        this.open(player);
     }
 
     public void open(Player player) {
-        Inventory inventory = getInventory();
+        Inventory inventory = this.getInventory();
 
-        provider.init(player, this.content);
+        this.provider.init(player, this.content);
         this.content.fillInventory(inventory);
 
-        getUpdateTask(player);
+        this.getUpdateTask(player);
 
         player.openInventory(inventory);
     }
 
     public void update(Player player, int page) {
         Validate.isTrue(page >= 0, "Page value must be bigger or equal 0");
-        getPersonalInventoryData(player).setOpenedPage(page);
-        update(player);
+        this.getPersonalInventoryData(player).setOpenedPage(page);
+        this.update(player);
     }
 
     public void update(Player player) {
         Inventory inventory = player.getOpenInventory().getTopInventory();
         if (inventory != null && inventory.getHolder().equals(this)) {
-            provider.init(player, this.content);
+            this.provider.init(player, this.content);
             this.content.fillInventory(inventory);
         }
+    }
+
+    public static Builder builder() {
+        return new Builder();
     }
 
     public static final class Builder {
@@ -291,7 +291,7 @@ public class CustomInventory implements InventoryHolder {
             inventory.updateDelay = this.updateDelay;
             inventory.closeConsumer = this.closeConsumer;
 
-            if (content != null) inventory.content = this.content;
+            if (this.content != null) inventory.content = this.content;
 
             return inventory;
         }

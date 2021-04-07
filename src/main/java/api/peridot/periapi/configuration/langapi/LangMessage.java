@@ -31,28 +31,28 @@ public class LangMessage {
 
     public LangMessage(ConfigurationSection section) {
         try {
-            useChat = section.getBoolean("chat.enabled");
-            useChatIfNotPlayer = section.getBoolean("chat.send-if-not-player");
-            if (useChat || useChatIfNotPlayer) {
+            this.useChat = section.getBoolean("chat.enabled");
+            this.useChatIfNotPlayer = section.getBoolean("chat.send-if-not-player");
+            if (this.useChat || this.useChatIfNotPlayer) {
                 if (section.isString("chat.content")) {
-                    chatContent.add(ColorUtil.color(section.getString("chat.content")));
+                    this.chatContent.add(ColorUtil.color(section.getString("chat.content")));
                 } else if (section.isList("chat.content")) {
-                    chatContent = ColorUtil.color(section.getStringList("chat.content"));
+                    this.chatContent = ColorUtil.color(section.getStringList("chat.content"));
                 }
             }
 
-            useTitle = section.getBoolean("title.enabled");
-            if (useTitle) {
-                titleContent = ColorUtil.color(section.getString("title.content"));
-                subtitleContent = ColorUtil.color(section.getString("title.sub-content"));
-                fadeIn = section.getInt("title.fade-in");
-                stay = section.getInt("title.stay");
-                fadeOut = section.getInt("title.fade-out");
+            this.useTitle = section.getBoolean("title.enabled");
+            if (this.useTitle) {
+                this.titleContent = ColorUtil.color(section.getString("title.content"));
+                this.subtitleContent = ColorUtil.color(section.getString("title.sub-content"));
+                this.fadeIn = section.getInt("title.fade-in");
+                this.stay = section.getInt("title.stay");
+                this.fadeOut = section.getInt("title.fade-out");
             }
 
-            useActionBar = section.getBoolean("actionbar.enabled");
-            if (useActionBar) {
-                actionBarContent = ColorUtil.color(section.getString("actionbar.content"));
+            this.useActionBar = section.getBoolean("actionbar.enabled");
+            if (this.useActionBar) {
+                this.actionBarContent = ColorUtil.color(section.getString("actionbar.content"));
             }
         } catch (Exception ignored) {
         }
@@ -61,23 +61,23 @@ public class LangMessage {
     /* Sending */
     public void broadcast(Replacement... replacements) {
         for (Player player : Bukkit.getOnlinePlayers()) {
-            send(player, replacements);
+            this.send(player, replacements);
         }
     }
 
     public void send(CommandSender sender, Replacement... replacements) {
-        if (useChat || (!(sender instanceof Player) && useChatIfNotPlayer)) {
-            getChatContent(replacements).forEach(sender::sendMessage);
+        if (this.useChat || (!(sender instanceof Player) && this.useChatIfNotPlayer)) {
+            this.getChatContent(replacements).forEach(sender::sendMessage);
         }
         if (sender instanceof Player) {
             Player player = (Player) sender;
-            if (useTitle) {
-                String titleMsg = getTitleContent(replacements);
-                String subtitleMsg = getSubtitleContent(replacements);
-                NotificationPackets.sendTitle(player, titleMsg, subtitleMsg, fadeIn, stay, fadeOut);
+            if (this.useTitle) {
+                String titleMsg = this.getTitleContent(replacements);
+                String subtitleMsg = this.getSubtitleContent(replacements);
+                NotificationPackets.sendTitle(player, titleMsg, subtitleMsg, this.fadeIn, this.stay, this.fadeOut);
             }
-            if (useActionBar) {
-                String actionBarMsg = getActionBarContent(replacements);
+            if (this.useActionBar) {
+                String actionBarMsg = this.getActionBarContent(replacements);
                 NotificationPackets.sendActionbar(player, actionBarMsg);
             }
         }
@@ -85,49 +85,49 @@ public class LangMessage {
 
     /* Chat */
     public boolean useChat() {
-        return useChat;
+        return this.useChat;
     }
 
     public boolean useChatIfNotPlayer() {
-        return useChatIfNotPlayer;
+        return this.useChatIfNotPlayer;
     }
 
     public List<String> getChatContent(Replacement... replacements) {
-        return chatContent.stream().map(s -> ReplacementUtil.replace(s, replacements)).collect(Collectors.toList());
+        return this.chatContent.stream().map(s -> ReplacementUtil.replace(s, replacements)).collect(Collectors.toList());
     }
 
     /* Title */
     public boolean useTitle() {
-        return useTitle;
+        return this.useTitle;
     }
 
     public String getTitleContent(Replacement... replacements) {
-        return ReplacementUtil.replace(titleContent, replacements);
+        return ReplacementUtil.replace(this.titleContent, replacements);
     }
 
     public String getSubtitleContent(Replacement... replacements) {
-        return ReplacementUtil.replace(subtitleContent, replacements);
+        return ReplacementUtil.replace(this.subtitleContent, replacements);
     }
 
     public int getFadeIn() {
-        return fadeIn;
+        return this.fadeIn;
     }
 
     public int getStay() {
-        return stay;
+        return this.stay;
     }
 
     public int getFadeOut() {
-        return fadeOut;
+        return this.fadeOut;
     }
 
     /* Actionbar */
     public boolean useActionBar() {
-        return useActionBar;
+        return this.useActionBar;
     }
 
     public String getActionBarContent(Replacement... replacements) {
-        return ReplacementUtil.replace(actionBarContent, replacements);
+        return ReplacementUtil.replace(this.actionBarContent, replacements);
     }
 
 }

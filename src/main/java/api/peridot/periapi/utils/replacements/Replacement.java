@@ -11,11 +11,11 @@ public class Replacement {
     }
 
     public String getFrom() {
-        return from;
+        return this.from;
     }
 
     public String getTo() {
-        return to;
+        return this.to;
     }
 
 }

@@ -19,11 +19,11 @@ public class SimpleLangMessage {
 
     public SimpleLangMessage(ConfigurationSection section) {
         try {
-            useChat = section.get("content") != null;
+            this.useChat = section.get("content") != null;
             if (section.isString("content")) {
-                chatContent.add(ColorUtil.color(section.getString("content")));
+                this.chatContent.add(ColorUtil.color(section.getString("content")));
             } else if (section.isList("content")) {
-                chatContent = ColorUtil.color(section.getStringList("content"));
+                this.chatContent = ColorUtil.color(section.getStringList("content"));
             }
         } catch (Exception ignored) {
         }
@@ -32,29 +32,29 @@ public class SimpleLangMessage {
     /* Sending */
     public void broadcast(Replacement... replacements) {
         for (Player player : Bukkit.getOnlinePlayers()) {
-            send(player, replacements);
+            this.send(player, replacements);
         }
     }
 
     public void send(CommandSender sender, Replacement... replacements) {
-        if (useChat) {
-            getChatContent(replacements).forEach(sender::sendMessage);
+        if (this.useChat) {
+            this.getChatContent(replacements).forEach(sender::sendMessage);
         }
     }
 
     /* Chat */
     public boolean useChat() {
-        return useChat;
+        return this.useChat;
     }
 
     public List<String> getChatContent(Replacement... replacements) {
-        return chatContent.stream().map(s -> ReplacementUtil.replace(s, replacements)).collect(Collectors.toList());
+        return this.chatContent.stream().map(s -> ReplacementUtil.replace(s, replacements)).collect(Collectors.toList());
     }
 
     /* Utils */
     public String getStringLine() {
-        if (chatContent.size() == 1) return chatContent.get(0);
-        return chatContent.toString();
+        if (this.chatContent.size() == 1) return this.chatContent.get(0);
+        return this.chatContent.toString();
     }
 
 }

@@ -12,7 +12,7 @@ public class Pagination {
     private int itemsPerPage = 1;
 
     public List<InventoryItem> getItems() {
-        return new ArrayList<>(items);
+        return new ArrayList<>(this.items);
     }
 
     public void setItems(List<InventoryItem> items) {
@@ -20,11 +20,11 @@ public class Pagination {
     }
 
     public void setItems(InventoryItem... items) {
-        setItems(Arrays.asList(items));
+        this.setItems(Arrays.asList(items));
     }
 
     public int getItemsPerPage() {
-        return itemsPerPage;
+        return this.itemsPerPage;
     }
 
     public void setItemsPerPage(int itemsPerPage) {
@@ -32,14 +32,14 @@ public class Pagination {
     }
 
     public List<InventoryItem> getItemsForPage(int page) {
-        int indexTo = (page + 1) * itemsPerPage;
-        if (indexTo > items.size()) indexTo = items.size();
+        int indexTo = (page + 1) * this.itemsPerPage;
+        if (indexTo > this.items.size()) indexTo = this.items.size();
 
-        return items.subList(page * itemsPerPage, indexTo);
+        return this.items.subList(page * this.itemsPerPage, indexTo);
     }
 
     public int getPageCount() {
-        return (int) Math.ceil((float) this.items.size() / itemsPerPage);
+        return (int) Math.ceil((float) this.items.size() / this.itemsPerPage);
     }
 
     public boolean isFirst(int page) {
@@ -47,7 +47,7 @@ public class Pagination {
     }
 
     public boolean isLast(int page) {
-        return page >= getPageCount() - 1;
+        return page >= this.getPageCount() - 1;
     }
 
 }

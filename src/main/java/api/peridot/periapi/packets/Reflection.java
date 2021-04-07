@@ -31,6 +31,70 @@ public final class Reflection {
     }
 
     /**
+     * An interface for invoking a specific constructor.
+     */
+    public interface ConstructorInvoker {
+
+        /**
+         * Invoke a constructor for a specific class.
+         *
+         * @param arguments - the arguments to pass to the constructor.
+         * @return The constructed object.
+         */
+        Object invoke(Object... arguments);
+
+    }
+
+    /**
+     * An interface for invoking a specific method.
+     */
+    public interface MethodInvoker {
+
+        /**
+         * Invoke a method on a specific target object.
+         *
+         * @param target    - the target object, or NULL for a static method.
+         * @param arguments - the arguments to pass to the method.
+         * @return The return value, or NULL if is void.
+         */
+        Object invoke(Object target, Object... arguments);
+
+    }
+
+    /**
+     * An interface for retrieving the field content.
+     *
+     * @param <T> - field type.
+     */
+    public interface FieldAccessor<T> {
+
+        /**
+         * Retrieve the content of a field.
+         *
+         * @param target - the target object, or NULL for a static field.
+         * @return The value of the field.
+         */
+        T get(Object target);
+
+        /**
+         * Set the content of a field.
+         *
+         * @param target - the target object, or NULL for a static field.
+         * @param value  - the new value of the field.
+         */
+        void set(Object target, Object value);
+
+        /**
+         * Determine if the given object has this field.
+         *
+         * @param target - the object to test.
+         * @return TRUE if it does, FALSE otherwise.
+         */
+        boolean hasField(Object target);
+
+    }
+
+    /**
      * Retrieve a field accessor for a specific field type and name.
      *
      * @param target    - the target type.
@@ -344,70 +408,6 @@ public final class Reflection {
 
         matcher.appendTail(output);
         return output.toString();
-    }
-
-    /**
-     * An interface for invoking a specific constructor.
-     */
-    public interface ConstructorInvoker {
-
-        /**
-         * Invoke a constructor for a specific class.
-         *
-         * @param arguments - the arguments to pass to the constructor.
-         * @return The constructed object.
-         */
-        Object invoke(Object... arguments);
-
-    }
-
-    /**
-     * An interface for invoking a specific method.
-     */
-    public interface MethodInvoker {
-
-        /**
-         * Invoke a method on a specific target object.
-         *
-         * @param target    - the target object, or NULL for a static method.
-         * @param arguments - the arguments to pass to the method.
-         * @return The return value, or NULL if is void.
-         */
-        Object invoke(Object target, Object... arguments);
-
-    }
-
-    /**
-     * An interface for retrieving the field content.
-     *
-     * @param <T> - field type.
-     */
-    public interface FieldAccessor<T> {
-
-        /**
-         * Retrieve the content of a field.
-         *
-         * @param target - the target object, or NULL for a static field.
-         * @return The value of the field.
-         */
-        T get(Object target);
-
-        /**
-         * Set the content of a field.
-         *
-         * @param target - the target object, or NULL for a static field.
-         * @param value  - the new value of the field.
-         */
-        void set(Object target, Object value);
-
-        /**
-         * Determine if the given object has this field.
-         *
-         * @param target - the object to test.
-         * @return TRUE if it does, FALSE otherwise.
-         */
-        boolean hasField(Object target);
-
     }
 
 }

@@ -21,25 +21,21 @@ public class InventoryItem {
         this.update = update;
     }
 
-    public static Builder builder() {
-        return new Builder();
-    }
-
     public ItemStack getItem() {
-        if (item == null) return new ItemStack(Material.AIR);
-        return item;
+        if (this.item == null) return new ItemStack(Material.AIR);
+        return this.item;
     }
 
     public Consumer<InventoryClickEvent> getConsumer() {
-        return consumer;
+        return this.consumer;
     }
 
     public void run(InventoryClickEvent event) {
-        consumer.accept(event);
+        this.consumer.accept(event);
     }
 
     public boolean isCancel() {
-        return cancel;
+        return this.cancel;
     }
 
     public void setCancel(boolean cancel) {
@@ -47,11 +43,15 @@ public class InventoryItem {
     }
 
     public boolean isUpdate() {
-        return update;
+        return this.update;
     }
 
     public void setUpdate(boolean update) {
         this.update = update;
+    }
+
+    public static Builder builder() {
+        return new Builder();
     }
 
     public static final class Builder {
@@ -91,7 +91,7 @@ public class InventoryItem {
         }
 
         public InventoryItem build() {
-            return new InventoryItem(item, consumer, cancel, update);
+            return new InventoryItem(this.item, this.consumer, this.cancel, this.update);
         }
 
     }

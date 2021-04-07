@@ -25,8 +25,8 @@ public class InventoryCloseListener implements Listener {
         if (!(event.getPlayer() instanceof Player)) return;
         Player player = (Player) event.getPlayer();
 
-        if (periApi.getInventoryManager().getInventories().isEmpty()) return;
-        for (CustomInventory customInventory : periApi.getInventoryManager().getInventories()) {
+        if (this.periApi.getInventoryManager().getInventories().isEmpty()) return;
+        for (CustomInventory customInventory : this.periApi.getInventoryManager().getInventories()) {
             if (event.getInventory().getHolder() == null) continue;
             if (!(event.getInventory().getHolder().equals(customInventory))) continue;
             customInventory.getCloseConsumer().accept(event);
@@ -36,7 +36,7 @@ public class InventoryCloseListener implements Listener {
                 data.setUpdateTask(null);
                 return;
             }
-            Bukkit.getScheduler().runTaskLaterAsynchronously(plugin, () -> customInventory.open(player), 2);
+            Bukkit.getScheduler().runTaskLaterAsynchronously(this.plugin, () -> customInventory.open(player), 2);
             return;
         }
     }
