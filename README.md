@@ -8,7 +8,7 @@ Add repository in `repositories` section
 ```
 <repository>
     <id>titanvale-repository</id>
-    <url>ttps://repo.https://repo.titanvale.net/public/</url>
+    <url>https://repo.https://repo.titanvale.net/public/</url>
 </repository>
 ```
 Add dependency in `dependencies` section
