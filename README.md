@@ -1,7 +1,34 @@
-# periApi
-Api to many things created for my private usage
+# periAPI
+API to many things created for my private usage
 
-#### Credits and code used in this api
+
+## Installation
+### Maven
+```
+<repository>
+    <id>titanvale-repository</id>
+    <url>ttps://repo.https://repo.titanvale.net/public/</url>
+</repository>
+```
+Add dependency in `dependencies` section
+```
+<dependency>
+  <groupId>api.peridot</groupId>
+  <artifactId>periAPI</artifactId>
+  <version>1.2.6</version>
+</dependency>
+```
+### Gradle
+Add repository in `repositories` section
+```
+maven { url "https://repo.https://repo.titanvale.net/public/" }
+```
+Add dependency in `dependencies` section
+```
+implementation 'api.peridot:periAPI:1.2.6'
+```
+
+## Credits
   * [Spigot](https://www.spigotmc.org/) - pieces of code in ConfigurationProvider
   * [TinyProtocol (ProtocolLib)](https://github.com/aadnk/ProtocolLib/tree/master/modules/TinyProtocol/src/main/java/com/comphenix/tinyprotocol) - tiny protocol to packets
   * [FunnyGuilds](https://github.com/FunnyGuilds/FunnyGuilds) - pieces of code to send title and actionbar
