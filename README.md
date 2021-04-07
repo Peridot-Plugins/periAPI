@@ -4,6 +4,7 @@ API to many things created for my private usage
 
 ## Installation
 ### Maven
+Add repository in `repositories` section
 ```
 <repository>
     <id>titanvale-repository</id>
